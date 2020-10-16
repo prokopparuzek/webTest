@@ -19,7 +19,7 @@
         var db = firebase.firestore();
         var cur = db.collection('now').doc('current');
         cur.get().then(function(doc) {
-            document.write(doc.data());
+            document.write(JSON.stringify(doc.data()));
         })
     </script>
 </body>
