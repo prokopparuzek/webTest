@@ -17,10 +17,9 @@
     <script src="/__/firebase/init.js"></script>
     <script charset="utf-8">
         var db = firebase.firestore();
-        db.collection("now").get().then((querySnapshot) => {
-            querySnapshot.forEach((doc) => {
-                    console.log(`${doc.id} => ${doc.data()}`);
-                        });
-                        });
+        var cur = db.collection('now').doc('current');
+        cur.get().then(function(doc) {
+            document.write(doc.data());
+        })
     </script>
 </body>
