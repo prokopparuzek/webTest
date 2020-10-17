@@ -1,4 +1,5 @@
-<body>
+<head>
+    <title>Teplota</title>
     <!-- Insert these scripts at the bottom of the HTML, but before you use
     any Firebase services -->
 
@@ -15,11 +16,10 @@
     <script src="/__/firebase/7.24.0/firebase-auth.js"></script>
     <script src="/__/firebase/7.24.0/firebase-firestore.js"></script>
     <script src="/__/firebase/init.js"></script>
-    <script charset="utf-8">
-        var db = firebase.firestore();
-        var cur = db.collection('now').doc('current');
-        cur.get().then(function(doc) {
-            document.write(JSON.stringify(doc.data()));
-        })
-    </script>
+    <!-- plotly -->
+    <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+    <div id="graph"></div>
+    <script src="./plot.js"></script>
 </body>
