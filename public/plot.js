@@ -6,16 +6,18 @@ var day = date.getDate();
 var isoD = year + '-' + (month+1) + '-' + day;
 // auth
 var hasLocalStorageUser;
+firebase.auth().getRedirectResult().then(function() {
+     sessionStorage.setItem("User", "OK");
+     hasLocalStorageUser = "OK";
+     plot();
+});
+firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 if (!firebase.auth().currentUser) {
-    hasLocalStorageUser = localStorage.getItem("User");
+    hasLocalStorageUser = sessionStorage.getItem("User");
     if (hasLocalStorageUser != "OK") {
         var provider = new firebase.auth.GoogleAuthProvider();
         provider.addScope('https://www.googleapis.com/auth/plus.login');
-         firebase.auth().signInWithPopup(provider).then(function() {
-             localStorage.setItem("User", "OK");
-             hasLocalStorageUser = "OK";
-             plot();
-        });
+        firebase.auth().signInWithRedirect(provider);
     }
 }
 function plot() {
