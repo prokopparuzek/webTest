@@ -1,9 +1,3 @@
-// Datum
-var date = new Date();
-var year = date.getFullYear();
-var month = date.getMonth();
-var day = date.getDate();
-var isoD = year + '-' + (month+1) + '-' + day;
 // auth
 var hasLocalStorageUser;
 firebase.auth().getRedirectResult().then(function() {
@@ -24,28 +18,34 @@ function plot() {
     if (hasLocalStorageUser == "OK") {
         // Firestore
         var db = firebase.firestore();
-        var cur = db.collection('room').doc(isoD);
+        var cur = db.collection('room').limit(2);
         // global variables
         var x = [];
         var y = [];
         var temp;
         var layout;
         var config;
+        var dataArray = [];
 
         function comp(a, b) { // date comparator
-            var Da = new Date(isoD + ' ' + a[0]);
-            var Db = new Date(isoD + ' ' + b[0]);
+            var Da = new Date(a[0]);
+            var Db = new Date(b[0]);
             return Da.getTime() - Db.getTime();
         }
 
         function load(entry) {
-            x.push(isoD + ' ' + entry[0]);
+            x.push(entry[0]);
             y.push(entry[1]['temperature']);
         }
 
-        cur.get().then(function(doc) {
-            var dataArray;
-            dataArray = Object.entries(doc.data());
+        cur.get().then(function (docs) {
+            docs.forEach(function(doc) {
+                var tempArray = Object.entries(doc.data());
+                tempArray.forEach((entry) => {
+                    entry[0] = doc.id + ' ' + entry[0];
+                });
+                dataArray.push(...tempArray);
+            });
             dataArray.sort(comp);
             dataArray.forEach(load);
             temp = {
