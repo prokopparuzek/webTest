@@ -3,7 +3,6 @@ var hasLocalStorageUser;
 firebase.auth().getRedirectResult().then(function() {
      sessionStorage.setItem("User", "OK");
      hasLocalStorageUser = "OK";
-     plot();
 });
 firebase.auth().setPersistence(firebase.auth.Auth.Persistence.SESSION)
 if (!firebase.auth().currentUser) {
@@ -18,8 +17,9 @@ function plot() {
     if (hasLocalStorageUser == "OK") {
         // Firestore
         var db = firebase.firestore();
-        var cur = db.collection('room').limit(2);
-        // global variables
+        var cur = db.collection('room');
+        cur = cur.orderBy('timestamp', 'desc').limit(2);
+        // variables
         var x = [];
         var y = [];
         var temp;
@@ -41,6 +41,7 @@ function plot() {
         cur.get().then(function (docs) {
             docs.forEach(function(doc) {
                 var tempArray = Object.entries(doc.data());
+                tempArray = tempArray.filter((value) => {return value[0] != "timestamp"});
                 tempArray.forEach((entry) => {
                     entry[0] = doc.id + ' ' + entry[0];
                 });
