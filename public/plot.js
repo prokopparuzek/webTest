@@ -13,6 +13,46 @@ if (!firebase.auth().currentUser) {
         firebase.auth().signInWithRedirect(provider);
     }
 }
+function plot2() {
+    if (hasLocalStorageUser == "OK") {
+        // Firestore
+        var db = firebase.firestore();
+        var cur = db.collection('room-measures');
+        cur = cur.orderBy('timestamp').limitToLast(576);
+        var x = [];
+        var y = [];
+        var temp;
+        var layout;
+        var config;
+        cur.get().then((docs) => {
+            docs.forEach((doc) => {
+                var date = new Date(doc.data().timestamp * 1000)
+                x.push(date.toLocaleString('cs'))
+                y.push(doc.data().temperature);
+            });
+            temp = {
+                type: "Scattergl",
+                mode: "lines",
+                name: 'teplota',
+                x: x,
+                y: y
+            };
+            layout = {
+                title: 'Teplota',
+                showlegend: true,
+                xaxis: {
+                    title: 'čas'
+                },
+                yaxis: {
+                    title: 'teplota'
+                }
+            };
+            config = {
+            };
+            Plotly.newPlot('graph-stamp', [temp], layout, config);
+        });
+    }
+}
 function plot() {
     if (hasLocalStorageUser == "OK") {
         // Firestore
@@ -73,3 +113,4 @@ function plot() {
     }
 }
 plot();
+plot2();
