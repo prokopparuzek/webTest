@@ -27,7 +27,8 @@ function plot2() {
         cur.get().then((docs) => {
             docs.forEach((doc) => {
                 var date = new Date(doc.data().timestamp * 1000)
-                x.push(date.toLocaleString('cs'))
+                date.setMinutes(date.getMinutes()-date.getTimezoneOffset())
+                x.push(date.toISOString())
                 y.push(doc.data().temperature);
             });
             temp = {
@@ -41,7 +42,7 @@ function plot2() {
                 title: 'Teplota',
                 showlegend: true,
                 xaxis: {
-                    title: 'čas'
+                    title: 'čas',
                 },
                 yaxis: {
                     title: 'teplota'
