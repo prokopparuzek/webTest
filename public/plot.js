@@ -17,6 +17,7 @@ function plot2() {
     if (hasLocalStorageUser == "OK") {
         // Firestore
         var db = firebase.firestore();
+        firebase.firestore().enablePersistence();
         var cur = db.collection('room-measures');
         cur = cur.orderBy('timestamp').limitToLast(576);
         var x = [];
