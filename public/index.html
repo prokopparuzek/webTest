@@ -1,4 +1,16 @@
 <head>
+  <style>
+  .button {
+    background-color: blue; /* Green background */
+    border: 1px solid blue; /* Green border */
+    color: white; /* White text */
+    padding: 10px 24px; /* Some padding */
+    cursor: pointer; /* Pointer/hand icon */
+  }
+  .button:hover {
+    background-color: #000099;
+  }
+  </style>
     <title>Teplota</title>
     <!-- Insert these scripts at the bottom of the HTML, but before you use
     any Firebase services -->
@@ -20,6 +32,9 @@
     <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
 </head>
 <body>
-    <div id="graph"></div>
-    <script src="./plot.js"></script>
+  <button class="button" onclick="plot()">Reload</button>
+  <div id="graph"></div>
+  <script src="./plot.js"></script>
+  <!-- default chart -->
+  <script>plot()</script>
 </body>
